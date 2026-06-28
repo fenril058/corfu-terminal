@@ -1,0 +1,34 @@
+name: sync-upstream
+
+# Mirror codeberg upstream into this repo's `master` branch so that
+# github.com/fenril058/emacs-config can fetch the package without depending on
+# codeberg.org being reachable. This workflow lives on the default `mirror`
+# branch (schedule events only fire from the default branch); it force-pushes
+# upstream `master` onto our `master`, which is kept byte-identical to upstream.
+
+on:
+  schedule:
+    - cron: "30 5 * * 1" # weekly, Monday 05:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Force-sync upstream master
+        env:
+          UPSTREAM: https://codeberg.org/akib/emacs-corfu-terminal.git
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git clone --bare "$UPSTREAM" upstream.git
+          git -C upstream.git push --force \
+            "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            refs/heads/master:refs/heads/master
