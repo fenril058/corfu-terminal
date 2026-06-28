@@ -1,4 +1,4 @@
-# corfu-terminal — codeberg mirror
+# emacs-corfu-terminal — codeberg mirror
 
 Read-only mirror of <https://codeberg.org/akib/emacs-corfu-terminal>.
 
