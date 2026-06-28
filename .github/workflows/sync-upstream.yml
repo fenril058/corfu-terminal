@@ -32,3 +32,5 @@ jobs:
           git -C upstream.git push --force \
             "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
             refs/heads/master:refs/heads/master
+
+# (registered on default branch)
